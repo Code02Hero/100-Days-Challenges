@@ -1,0 +1,26 @@
+#include <stdio.h>
+
+int main() {
+    printf("Hello, World!\n");
+    return 0;
+}
+
+/*1. #include <stdio.h>
+Purpose: This is a preprocessor directive that tells the compiler to include the standard input-output library before actual compilation starts.
+<stdio.h>: This header file contains declarations for input and output functions, such as printf and scanf.
+
+2. int main()
+Purpose: This is the main function where the execution of the program begins.
+int: The return type of the main function, which indicates that this function returns an integer value to the operating system.
+
+3. { ... }
+Purpose: These curly braces define the start and end of the main function.
+
+4. printf("Hello, World!\n");
+Purpose: This line prints the text "Hello, World!" to the standard output (usually the screen).
+printf: This is a function defined in stdio.h that allows you to output formatted text.
+"Hello, World!\n": This is the string that printf will print. The \n is an escape sequence that represents a newline character, which moves the cursor to the next line after printing the text.
+
+5. return 0;
+Purpose: This line terminates the main function and returns an integer value to the operating system.
+0: Returning 0 typically indicates that the program executed successfully. Different values can be used to indicate different exit statuses.*/
