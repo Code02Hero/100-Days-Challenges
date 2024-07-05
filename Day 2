@@ -1,1 +1,39 @@
+#include <stdio.h>
+
+int main() {
+    // Variable declaration
+    int age;
+    float height;
+    double weight;
+    char initial;
+
+    // Output a message to the user
+    printf("Enter your age: ");
+    // Read the integer input from the user
+    scanf("%d", &age);
+
+    // Output a message to the user
+    printf("Enter your height in meters: ");
+    // Read the floating-point input from the user
+    scanf("%f", &height);
+
+    // Output a message to the user
+    printf("Enter your weight in kilograms: ");
+    // Read the double-precision floating-point input from the user
+    scanf("%lf", &weight);
+
+    // Output a message to the user
+    printf("Enter the initial of your first name: ");
+    // Read the character input from the user
+    scanf(" %c", &initial); // Note the space before %c to consume any whitespace
+
+    // Output the collected information
+    printf("\nYour details:\n");
+    printf("Age: %d\n", age);
+    printf("Height: %.2f meters\n", height);
+    printf("Weight: %.2f kilograms\n", weight);
+    printf("Initial: %c\n", initial);
+
+    return 0;
+}
 
