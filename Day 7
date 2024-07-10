@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    // Array of integers
+    int numbers[5] = {1, 2, 3, 4, 5};
+    printf("Array of integers: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", numbers[i]);
+    }
+    printf("\n");
+
+    // String in C
+    char str[50];
+    strcpy(str, "Hello, World!");
+
+    printf("String: %s\n", str);
+
+    // Array of strings
+    char names[3][10] = {"Alice", "Bob", "Charlie"};
+    printf("Array of strings:\n");
+    for (int i = 0; i < 3; i++) {
+        printf("%s\n", names[i]);
+    }
+
+    return 0;
+}
