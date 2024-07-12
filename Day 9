@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    // Dynamic memory allocation for an array of 5 integers
+    int *arr = (int *)malloc(5 * sizeof(int));
+    if (arr == NULL) {
+        printf("Memory allocation failed\n");
+        return 1;
+    }
+
+    // Initializing array using pointer arithmetic
+    for (int i = 0; i < 5; i++) {
+        *(arr + i) = i * 10; // Equivalent to arr[i] = i * 10;
+    }
+
+    // Printing array elements using pointer arithmetic
+    printf("Array elements: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d ", *(arr + i)); // Equivalent to arr[i]
+    }
+    printf("\n");
+
+    // Demonstrating pointer arithmetic
+    int *ptr = arr;
+    printf("Pointer arithmetic demonstration:\n");
+    for (int i = 0; i < 5; i++) {
+        printf("Value at arr[%d] (using pointer): %d\n", i, *ptr);
+        ptr++;
+    }
+
+    // Freeing allocated memory
+    free(arr);
+    return 0;
+}
