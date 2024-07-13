@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <string.h>
+
+// Define a structure for a person
+struct Person {
+    char name[50];
+    int age;
+    float height;
+};
+
+// Define a union for data that can be either an integer or a float
+union Data {
+    int intVal;
+    float floatVal;
+};
+
+int main() {
+    // Working with structures
+    struct Person person1;
+    strcpy(person1.name, "John Doe");
+    person1.age = 30;
+    person1.height = 5.9;
+
+    printf("Person Details:\n");
+    printf("Name: %s\n", person1.name);
+    printf("Age: %d\n", person1.age);
+    printf("Height: %.2f\n", person1.height);
+
+    // Working with unions
+    union Data data;
+    data.intVal = 10;
+    printf("\nData as Integer: %d\n", data.intVal);
+
+    data.floatVal = 20.5;
+    printf("Data as Float: %.2f\n", data.floatVal);
+
+    // Note: Accessing data.intVal after assigning data.floatVal may not be valid
+    // because they share the same memory location
+
+    return 0;
+}
