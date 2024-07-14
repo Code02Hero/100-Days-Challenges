@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <string.h>
+
+// Define a nested structure for an address
+struct Address {
+    char street[50];
+    char city[50];
+    char state[20];
+    int zipCode;
+};
+
+// Define a structure for a person that includes the Address structure
+struct Person {
+    char name[50];
+    int age;
+    float height;
+    struct Address address;
+};
+
+// Define a union that includes different types and structures
+union Data {
+    int intVal;
+    float floatVal;
+    char strVal[20];
+    struct Person personVal;
+};
+
+int main() {
+    // Working with nested structures
+    struct Person person1;
+    strcpy(person1.name, "John Doe");
+    person1.age = 30;
+    person1.height = 5.9;
+    strcpy(person1.address.street, "123 Main St");
+    strcpy(person1.address.city, "Anytown");
+    strcpy(person1.address.state, "CA");
+    person1.address.zipCode = 12345;
+
+    printf("Person Details:\n");
+    printf("Name: %s\n", person1.name);
+    printf("Age: %d\n", person1.age);
+    printf("Height: %.2f\n", person1.height);
+    printf("Address: %s, %s, %s,
