@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int *arr;
+    int initial_size = 5;
+    int new_size;
+    int i;
+
+    // Allocate memory for the initial array
+    arr = (int *)malloc(initial_size * sizeof(int));
+
+    if (arr == NULL) {
+        printf("Memory allocation failed!\n");
+        return 1;
+    }
+
+    // Fill the initial array with values
+    for (i = 0; i < initial_size; i++) {
+        arr[i] = i + 1;
+    }
+
+    // Print the initial array
+    printf("Initial array: ");
+    for (i = 0; i < initial_size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    // New size for the array
+    printf("Enter new size for the array: ");
+    scanf("%d", &new_size);
+
+    // Reallocate memory for the new size
+    arr = (int *)realloc(arr, new_size * sizeof(int));
+
+    if (arr == NULL) {
+        printf("Memory reallocation failed!\n");
+        return 1;
+    }
+
+    // Fill the new part of the array with values
+    for (i = initial_size; i < new_size; i++) {
+        arr[i] = i + 1;
+    }
+
+    // Print the new array
+    printf("New array: ");
+    for (i = 0; i < new_size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    // Free the allocated memory
+    free(arr);
+
+    return 0;
+}
