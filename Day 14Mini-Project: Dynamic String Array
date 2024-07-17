@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define INITIAL_CAPACITY 5
+
+// Structure for dynamic string array
+typedef struct {
+    char **array;
+    int size;
+    int capacity;
+} StringArray;
+
+// Function to initialize the dynamic string array
+StringArray* initializeStringArray() {
+    StringArray *strArray = (StringArray*)malloc(sizeof(StringArray));
+    if (strArray == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+    strArray->array = (char**)malloc(INITIAL_CAPACITY * sizeof(char*));
+    if (strArray->array == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        free(strArray);
+        exit(1);
+    }
+    strArray->size = 0;
+    strArray->capacity = INITIAL_CAPACITY;
+    return strArray;
+}
+
+// Function to add a new string to the array
+void addString(StringArray *strArray, const char *str) {
+    if (strArray->size == strArray->capacity) {
+        strArray->capacity *= 2;
+        strArray->array = (char**)realloc(strArray->array, strArray->capacity * sizeof(char*));
+        if (strArray->array == NULL) {
+            fprintf(stderr, "Memory reallocation failed\n");
+            exit(1);
+        }
+    }
+    strArray->array[strArray->size] = (char*)malloc((strlen(str) + 1) * sizeof(char));
+    if (strArray->array[strArray->size] == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+    strcpy(strArray->array[strArray->size], str);
+    strArray->size++;
+}
+
+// Function to remove a string from the array
+void removeString(StringArray *strArray, int index) {
+    if (index < 0 || index >= strArray->size) {
+        fprintf(stderr, "Invalid index\n");
+        return;
+    }
+    free(strArray->array[index]);
+    for (int i = index; i < strArray->size - 1; i++) {
+        strArray->array[i] = strArray->array[i + 1];
+    }
+    strArray->size--;
+    if (strArray->size > 0 && strArray->size == strArray->capacity / 4) {
+        strArray->capacity /= 2;
+        strArray->array = (char**)realloc(strArray->array, strArray->capacity * sizeof(char*));
+        if (strArray->array == NULL) {
+            fprintf(stderr, "Memory reallocation failed\n");
+            exit(1);
+        }
+    }
+}
+
+// Function to free the dynamic string array
+void freeStringArray(StringArray *strArray) {
+    for (int i = 0; i < strArray->size; i++) {
+        free(strArray->array[i]);
+    }
+    free(strArray->array);
+    free(strArray);
+}
+
+// Main function to demonstrate the dynamic string array usage
+int main() {
+    StringArray *strArray = initializeStringArray();
+
+    addString(strArray, "Hello");
+    addString(strArray, "World");
+    addString(strArray, "Dynamic");
+    addString(strArray, "Memory");
+    addString(strArray, "Allocation");
+
+    printf("Strings in the array:\n");
+    for (int i = 0; i < strArray->size; i++) {
+        printf("%s\n", strArray->array[i]);
+    }
+
+    removeString(strArray, 2);
+
+    printf("\nStrings in the array after removal:\n");
+    for (int i = 0; i < strArray->size; i++) {
+        printf("%s\n", strArray->array[i]);
+    }
+
+    freeStringArray(strArray);
+
+    return 0;
+}
