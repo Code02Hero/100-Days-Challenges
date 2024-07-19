@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define a structure for employee data
+typedef struct {
+    int id;
+    char name[50];
+    float salary;
+} Employee;
+
+// Function to write employee data to a binary file
+void writeEmployeesToFile(const char *filename, Employee *employees, size_t count) {
+    FILE *fp = fopen(filename, "wb");
+    if (fp == NULL) {
+        fprintf(stderr, "Could not open file %s for writing\n", filename);
+        exit(1);
+    }
+    size_t written = fwrite(employees, sizeof(Employee), count, fp);
+    if (written != count) {
+        fprintf(stderr, "Error writing data to file\n");
+        fclose(fp);
+        exit(1);
+    }
+    fclose(fp);
+}
+
+// Function to read employee data from a binary file
+Employee* readEmployeesFromFile(const char *filename, size_t *count) {
+    FILE *fp = fopen(filename, "rb");
+    if (fp == NULL) {
+        fprintf(stderr, "Could not open file %s for reading\n", filename);
+        exit(1);
+    }
+
+    fseek(fp, 0, SEEK_END);
+    long fileSize = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    *count = fileSize / sizeof(Employee);
+    Employee *employees = (Employee*)malloc(fileSize);
+    if (employees == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        fclose(fp);
+        exit(1);
+    }
+
+    size_t read = fread(employees, sizeof(Employee), *count, fp);
+    if (read != *count) {
+        fprintf(stderr, "Error reading data from file\n");
+        free(employees);
+        fclose(fp);
+        exit(1);
+    }
+    fclose(fp);
+    return employees;
+}
+
+int main() {
+    const char *filename = "employees.dat";
+
+    // Create some employee data
+    Employee employees[3] = {
+        {1, "Alice Johnson", 50000.0},
+        {2, "Bob Smith", 55000.0},
+        {3, "Charlie Brown", 60000.0}
+    };
+
+    // Write employee data to file
+    writeEmployeesToFile(filename, employees, 3);
+
+    // Read employee data from file
+    size_t count;
+    Employee *readEmployees = readEmployeesFromFile(filename, &count);
+
+    // Display read employee data
+    printf("Read %zu employees from file:\n", count);
+    for (size_t i = 0; i < count; i++) {
+        printf("ID: %d, Name: %s, Salary: %.2f\n", readEmployees[i].id, readEmployees[i].name, readEmployees[i].salary);
+    }
+
+    // Free allocated memory
+    free(readEmployees);
+
+    return 0;
+}
