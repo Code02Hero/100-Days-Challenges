@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+// Define macros for PI and basic shapes
+#define PI 3.14159265358979323846
+#define CIRCLE 1
+#define RECTANGLE 2
+#define TRIANGLE 3
+
+// Macro function to calculate area of a circle
+#define AREA_CIRCLE(radius) (PI * (radius) * (radius))
+
+// Macro function to calculate area of a rectangle
+#define AREA_RECTANGLE(length, width) ((length) * (width))
+
+// Macro function to calculate area of a triangle
+#define AREA_TRIANGLE(base, height) (0.5 * (base) * (height))
+
+// Conditional compilation for shape selection
+#define SELECTED_SHAPE TRIANGLE
+
+int main() {
+    printf("File: %s\n", __FILE__);
+    printf("Date: %s\n", __DATE__);
+    printf("Time: %s\n", __TIME__);
+    printf("Line: %d\n\n", __LINE__);
+
+    #if SELECTED_SHAPE == CIRCLE
+        double radius = 5.0;
+        printf("Selected Shape: Circle\n");
+        printf("Radius: %.2f\n", radius);
+        printf("Area: %.2f\n", AREA_CIRCLE(radius));
+
+    #elif SELECTED_SHAPE == RECTANGLE
+        double length = 10.0;
+        double width = 5.0;
+        printf("Selected Shape: Rectangle\n");
+        printf("Length: %.2f\n", length);
+        printf("Width: %.2f\n", width);
+        printf("Area: %.2f\n", AREA_RECTANGLE(length, width));
+
+    #elif SELECTED_SHAPE == TRIANGLE
+        double base = 8.0;
+        double height = 5.0;
+        printf("Selected Shape: Triangle\n");
+        printf("Base: %.2f\n", base);
+        printf("Height: %.2f\n", height);
+        printf("Area: %.2f\n", AREA_TRIANGLE(base, height));
+
+    #else
+        printf("No valid shape selected\n");
+    #endif
+
+    return 0;
+}
