@@ -1,0 +1,51 @@
+//Create Header File (calculator.h):
+#ifndef CALCULATOR_H
+#define CALCULATOR_H
+
+// Function declarations
+int add(int a, int b);
+int subtract(int a, int b);
+int multiply(int a, int b);
+double divide(int a, int b);
+
+#endif // CALCULATOR_H
+
+
+//Create Source File for Implementations (calculator.c):
+#include "calculator.h"
+
+// Function definitions
+int add(int a, int b) {
+    return a + b;
+}
+
+int subtract(int a, int b) {
+    return a - b;
+}
+
+int multiply(int a, int b) {
+    return a * b;
+}
+
+double divide(int a, int b) {
+    if (b == 0) {
+        return 0; // Simple error handling
+    }
+    return (double)a / b;
+}
+
+
+//Create Main Program (main.c):
+#include <stdio.h>
+#include "calculator.h"
+
+int main() {
+    int a = 10, b = 5;
+
+    printf("Addition: %d + %d = %d\n", a, b, add(a, b));
+    printf("Subtraction: %d - %d = %d\n", a, b, subtract(a, b));
+    printf("Multiplication: %d * %d = %d\n", a, b, multiply(a, b));
+    printf("Division: %d / %d = %.2f\n", a, b, divide(a, b));
+
+    return 0;
+}
