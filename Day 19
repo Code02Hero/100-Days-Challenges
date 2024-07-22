@@ -1,0 +1,99 @@
+Math Operations Header (math_ops.h):
+#ifndef MATH_OPS_H
+#define MATH_OPS_H
+
+// Function declarations
+int add(int a, int b);
+int subtract(int a, int b);
+int multiply(int a, int b);
+double divide(int a, int b);
+
+#endif // MATH_OPS_H
+
+
+Math Operations Source (math_ops.c):
+#include "math_ops.h"
+
+// Function definitions
+int add(int a, int b) {
+    return a + b;
+}
+
+int subtract(int a, int b) {
+    return a - b;
+}
+
+int multiply(int a, int b) {
+    return a * b;
+}
+
+double divide(int a, int b) {
+    if (b == 0) {
+        return 0; // Simple error handling
+    }
+    return (double)a / b;
+}
+
+
+String Operations Header (string_ops.h):
+#ifndef STRING_OPS_H
+#define STRING_OPS_H
+
+#include <stdbool.h>
+
+// Function declarations
+bool is_palindrome(const char *str);
+void reverse_string(char *str);
+
+#endif // STRING_OPS_H
+
+
+String Operations Source (string_ops.c):
+#include <string.h>
+#include "string_ops.h"
+
+// Function definitions
+bool is_palindrome(const char *str) {
+    int length = strlen(str);
+    for (int i = 0; i < length / 2; i++) {
+        if (str[i] != str[length - i - 1]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void reverse_string(char *str) {
+    int length = strlen(str);
+    for (int i = 0; i < length / 2; i++) {
+        char temp = str[i];
+        str[i] = str[length - i - 1];
+        str[length - i - 1] = temp;
+    }
+}
+
+
+
+Main Program (main.c):
+#include <stdio.h>
+#include "math_ops.h"
+#include "string_ops.h"
+
+int main() {
+    int a = 10, b = 5;
+    char str[] = "madam";
+
+    // Math operations
+    printf("Addition: %d + %d = %d\n", a, b, add(a, b));
+    printf("Subtraction: %d - %d = %d\n", a, b, subtract(a, b));
+    printf("Multiplication: %d * %d = %d\n", a, b, multiply(a, b));
+    printf("Division: %d / %d = %.2f\n", a, b, divide(a, b));
+
+    // String operations
+    printf("Original String: %s\n", str);
+    printf("Is Palindrome: %s\n", is_palindrome(str) ? "Yes" : "No");
+    reverse_string(str);
+    printf("Reversed String: %s\n", str);
+
+    return 0;
+}
