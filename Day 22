@@ -1,0 +1,136 @@
+Header File: contacts.h
+#ifndef CONTACTS_H
+#define CONTACTS_H
+
+#define MAX_NAME_LENGTH 50
+#define MAX_PHONE_LENGTH 15
+#define MAX_EMAIL_LENGTH 50
+
+typedef struct {
+    char name[MAX_NAME_LENGTH];
+    char phone[MAX_PHONE_LENGTH];
+    char email[MAX_EMAIL_LENGTH];
+} Contact;
+
+void addContact();
+void viewContacts();
+void searchContact(const char *name);
+
+#endif
+
+
+Implementation File: contacts.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "contacts.h"
+
+#define CONTACTS_FILE "contacts.dat"
+
+void addContact() {
+    Contact contact;
+    FILE *file = fopen(CONTACTS_FILE, "ab");
+
+    if (!file) {
+        perror("Failed to open file");
+        return;
+    }
+
+    printf("Enter name: ");
+    scanf("%49s", contact.name);
+    printf("Enter phone: ");
+    scanf("%14s", contact.phone);
+    printf("Enter email: ");
+    scanf("%49s", contact.email);
+
+    fwrite(&contact, sizeof(Contact), 1, file);
+    fclose(file);
+
+    printf("Contact added successfully!\n");
+}
+
+void viewContacts() {
+    Contact contact;
+    FILE *file = fopen(CONTACTS_FILE, "rb");
+
+    if (!file) {
+        perror("Failed to open file");
+        return;
+    }
+
+    printf("Contacts:\n");
+    printf("-------------------------------------------------\n");
+    while (fread(&contact, sizeof(Contact), 1, file)) {
+        printf("Name: %s\nPhone: %s\nEmail: %s\n", contact.name, contact.phone, contact.email);
+        printf("-------------------------------------------------\n");
+    }
+
+    fclose(file);
+}
+
+void searchContact(const char *name) {
+    Contact contact;
+    FILE *file = fopen(CONTACTS_FILE, "rb");
+    int found = 0;
+
+    if (!file) {
+        perror("Failed to open file");
+        return;
+    }
+
+    while (fread(&contact, sizeof(Contact), 1, file)) {
+        if (strcmp(contact.name, name) == 0) {
+            printf("Contact found:\n");
+            printf("Name: %s\nPhone: %s\nEmail: %s\n", contact.name, contact.phone, contact.email);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found) {
+        printf("No contact found with name '%s'\n", name);
+    }
+
+    fclose(file);
+}
+
+
+Main File: main.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "contacts.h"
+
+int main(int argc, char *argv[]) {
+    int choice;
+
+    if (argc == 3 && strcmp(argv[1], "search") == 0) {
+        searchContact(argv[2]);
+        return 0;
+    }
+
+    while (1) {
+        printf("Contact Management System\n");
+        printf("1. Add Contact\n");
+        printf("2. View Contacts\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addContact();
+                break;
+            case 2:
+                viewContacts();
+                break;
+            case 3:
+                exit(0);
+                break;
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+
+    return 0;
+}
