@@ -1,0 +1,165 @@
+Advanced Stack Implementation
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+// Stack structure
+struct Stack {
+    int top;
+    unsigned capacity;
+    int* array;
+};
+
+// Function to create a stack
+struct Stack* createStack(unsigned capacity) {
+    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    stack->capacity = capacity;
+    stack->top = -1;
+    stack->array = (int*)malloc(stack->capacity * sizeof(int));
+    return stack;
+}
+
+// Function to resize the stack
+void resizeStack(struct Stack* stack) {
+    stack->capacity *= 2;
+    stack->array = (int*)realloc(stack->array, stack->capacity * sizeof(int));
+    printf("Stack resized to %d\n", stack->capacity);
+}
+
+// Stack is full when top is equal to the last index
+int isFull(struct Stack* stack) {
+    return stack->top == stack->capacity - 1;
+}
+
+// Stack is empty when top is -1
+int isEmpty(struct Stack* stack) {
+    return stack->top == -1;
+}
+
+// Function to add an item to stack
+void push(struct Stack* stack, int item) {
+    if (isFull(stack)) {
+        resizeStack(stack);
+    }
+    stack->array[++stack->top] = item;
+    printf("%d pushed to stack\n", item);
+}
+
+// Function to remove an item from stack
+int pop(struct Stack* stack) {
+    if (isEmpty(stack))
+        return INT_MIN;
+    return stack->array[stack->top--];
+}
+
+// Function to return the top from stack without removing it
+int peek(struct Stack* stack) {
+    if (isEmpty(stack))
+        return INT_MIN;
+    return stack->array[stack->top];
+}
+
+int main() {
+    struct Stack* stack = createStack(2);
+
+    push(stack, 10);
+    push(stack, 20);
+    push(stack, 30);
+    push(stack, 40);
+
+    printf("%d popped from stack\n", pop(stack));
+    printf("Top element is %d\n", peek(stack));
+
+    return 0;
+}
+
+
+
+Advanced Queue Implementation
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+// Queue structure
+struct Queue {
+    int front, rear, size;
+    unsigned capacity;
+    int* array;
+};
+
+// Function to create a queue
+struct Queue* createQueue(unsigned capacity) {
+    struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+    queue->capacity = capacity;
+    queue->front = queue->size = 0;
+    queue->rear = capacity - 1;
+    queue->array = (int*)malloc(queue->capacity * sizeof(int));
+    return queue;
+}
+
+// Function to resize the queue
+void resizeQueue(struct Queue* queue) {
+    queue->capacity *= 2;
+    queue->array = (int*)realloc(queue->array, queue->capacity * sizeof(int));
+    printf("Queue resized to %d\n", queue->capacity);
+}
+
+// Queue is full when size becomes equal to the capacity
+int isFull(struct Queue* queue) {
+    return (queue->size == queue->capacity);
+}
+
+// Queue is empty when size is 0
+int isEmpty(struct Queue* queue) {
+    return (queue->size == 0);
+}
+
+// Function to add an item to the queue
+void enqueue(struct Queue* queue, int item) {
+    if (isFull(queue)) {
+        resizeQueue(queue);
+    }
+    queue->rear = (queue->rear + 1) % queue->capacity;
+    queue->array[queue->rear] = item;
+    queue->size = queue->size + 1;
+    printf("%d enqueued to queue\n", item);
+}
+
+// Function to remove an item from queue
+int dequeue(struct Queue* queue) {
+    if (isEmpty(queue))
+        return INT_MIN;
+    int item = queue->array[queue->front];
+    queue->front = (queue->front + 1) % queue->capacity;
+    queue->size = queue->size - 1;
+    return item;
+}
+
+// Function to get front of queue
+int front(struct Queue* queue) {
+    if (isEmpty(queue))
+        return INT_MIN;
+    return queue->array[queue->front];
+}
+
+// Function to get rear of queue
+int rear(struct Queue* queue) {
+    if (isEmpty(queue))
+        return INT_MIN;
+    return queue->array[queue->rear];
+}
+
+int main() {
+    struct Queue* queue = createQueue(2);
+
+    enqueue(queue, 10);
+    enqueue(queue, 20);
+    enqueue(queue, 30);
+    enqueue(queue, 40);
+
+    printf("%d dequeued from queue\n", dequeue(queue));
+    printf("Front item is %d\n", front(queue));
+    printf("Rear item is %d\n", rear(queue));
+
+    return 0;
+}
