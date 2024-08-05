@@ -1,0 +1,136 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to insert a new node in the binary tree
+struct Node* insertNode(struct Node* node, int data) {
+    if (node == NULL) {
+        return createNode(data);
+    }
+    if (data < node->data) {
+        node->left = insertNode(node->left, data);
+    } else if (data > node->data) {
+        node->right = insertNode(node->right, data);
+    }
+    return node;
+}
+
+// Function to find the minimum value node
+struct Node* minValueNode(struct Node* node) {
+    struct Node* current = node;
+    while (current && current->left != NULL) {
+        current = current->left;
+    }
+    return current;
+}
+
+// Function to delete a node in the binary tree
+struct Node* deleteNode(struct Node* root, int data) {
+    if (root == NULL) {
+        return root;
+    }
+    if (data < root->data) {
+        root->left = deleteNode(root->left, data);
+    } else if (data > root->data) {
+        root->right = deleteNode(root->right, data);
+    } else {
+        if (root->left == NULL) {
+            struct Node* temp = root->right;
+            free(root);
+            return temp;
+        } else if (root->right == NULL) {
+            struct Node* temp = root->left;
+            free(root);
+            return temp;
+        }
+        struct Node* temp = minValueNode(root->right);
+        root->data = temp->data;
+        root->right = deleteNode(root->right, temp->data);
+    }
+    return root;
+}
+
+// Function to search for a node in the binary tree
+struct Node* search(struct Node* root, int data) {
+    if (root == NULL || root->data == data) {
+        return root;
+    }
+    if (root->data < data) {
+        return search(root->right, data);
+    }
+    return search(root->left, data);
+}
+
+// In-order traversal
+void inorder(struct Node* root) {
+    if (root != NULL) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+// Pre-order traversal
+void preorder(struct Node* root) {
+    if (root != NULL) {
+        printf("%d ", root->data);
+        preorder(root->left);
+        preorder(root->right);
+    }
+}
+
+// Post-order traversal
+void postorder(struct Node* root) {
+    if (root != NULL) {
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
+    }
+}
+
+int main() {
+    struct Node* root = NULL;
+    root = insertNode(root, 50);
+    insertNode(root, 30);
+    insertNode(root, 20);
+    insertNode(root, 40);
+    insertNode(root, 70);
+    insertNode(root, 60);
+    insertNode(root, 80);
+
+    printf("In-order traversal: ");
+    inorder(root);
+    printf("\n");
+
+    printf("Pre-order traversal: ");
+    preorder(root);
+    printf("\n");
+
+    printf("Post-order traversal: ");
+    postorder(root);
+    printf("\n");
+
+    printf("Searching for 40 in the tree: %s\n", search(root, 40) != NULL ? "Found" : "Not Found");
+
+    root = deleteNode(root, 20);
+    printf("In-order traversal after deleting 20: ");
+    inorder(root);
+    printf("\n");
+
+    return 0;
+}
