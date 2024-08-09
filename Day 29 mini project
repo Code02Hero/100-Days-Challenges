@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Node structure
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+
+// Function to create a new node
+struct Node* createNode(int data) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = data;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Function to insert a new node in the BST
+struct Node* insertNode(struct Node* node, int data) {
+    if (node == NULL) {
+        return createNode(data);
+    }
+    if (data < node->data) {
+        node->left = insertNode(node->left, data);
+    } else if (data > node->data) {
+        node->right = insertNode(node->right, data);
+    }
+    return node;
+}
+
+// Function to print the BST
+void printTree(struct Node* root, int space) {
+    if (root == NULL) return;
+
+    space += 10;
+
+    printTree(root->right, space);
+    printf("\n");
+
+    for (int i = 10; i < space; i++)
+        printf(" ");
+    printf("%d\n", root->data);
+
+    printTree(root->left, space);
+}
+
+int main() {
+    struct Node* root = NULL;
+
+    root = insertNode(root, 50);
+    insertNode(root, 30);
+    insertNode(root, 20);
+    insertNode(root, 40);
+    insertNode(root, 70);
+    insertNode(root, 60);
+    insertNode(root, 80);
+
+    printf("Binary Search Tree:\n");
+    printTree(root, 0);
+
+    return 0;
+}
